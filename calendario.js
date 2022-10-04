@@ -56,6 +56,7 @@ let data = new Date(ano, 0, 1);
 let dia = data.getDay();
 
 verificaAnoBissexto(ano);
+console.log('O ano é bissexto?', bissexto);
 
 // GERA UM ARRAY DE OBJETOS CUJAS PROPRIEDADES SÃO O NOME DO MÊS E A QUANTIDADE DE DIAS
 for (let i = 0; i < 12; i++) {
@@ -67,19 +68,19 @@ for (let i = 0; i < 12; i++) {
 		case 7:
 		case 9:
 		case 11:
-			mesesCompleto[i] = { mes: meses[i], dias: $31dias, diasNome: [] };
+			mesesCompleto[i] = { mes: meses[i], dias: $31dias, diasNome: [], semanas: [] };
 			break;
 		case 3:
 		case 5:
 		case 8:
 		case 10:
-			mesesCompleto[i] = { mes: meses[i], dias: $30dias, diasNome: [] };
+			mesesCompleto[i] = { mes: meses[i], dias: $30dias, diasNome: [], semanas: [] };
 			break;
 		case 1:
 			if (bissexto) {
-				mesesCompleto[1] = { mes: meses[1], dias: $29dias, diasNome: [] };
+				mesesCompleto[1] = { mes: meses[1], dias: $29dias, diasNome: [], semanas: [] };
 			} else {
-				mesesCompleto[1] = { mes: meses[1], dias: $28dias, diasNome: [] };
+				mesesCompleto[1] = { mes: meses[1], dias: $28dias, diasNome: [], semanas: [] };
 			}
 			break;
 	}
@@ -88,15 +89,50 @@ for (let i = 0; i < 12; i++) {
 let k = dia;
 
 for (let i = 0; i < mesesCompleto.length; i++) {
+	// console.log(mesesCompleto[i].mes); // IMPRIME O NOME DO MÊS
+
 	for (let j = 0; j < mesesCompleto[i].dias.length; j++) {
+		let indiceDia = k;
+		mesesCompleto[i].dias[j].indice = indiceDia;
+
 		let diaSemana = nomeDias[k];
 		mesesCompleto[i].diasNome[j] = diaSemana;
+
+		if (indiceDia == 0 && mesesCompleto[i].dias.length % 7 == 0) {
+			mesesCompleto[i].semanas = new Array(4);
+		} else {
+			mesesCompleto[i].semanas = new Array(5);
+		}
+
+		for (let c = 0; c < mesesCompleto[i].semanas.length; c++) {
+			if (c == 0) {
+				mesesCompleto[i].semanas[c] = mesesCompleto[i].dias.slice(undefined, (c + 1) * 7);
+			} else {
+				mesesCompleto[i].semanas[c] = mesesCompleto[i].dias.slice(c * 7, (c + 1) * 7);
+			}
+		}
+
 		k++;
 		if (k >= 7) {
 			k = 0;
 		}
 	}
+	// console.log(mesesCompleto[i].semanas);
 }
 
-// console.log(mesesCompleto); // MOSTRA TODOS OS OBJETOS MESES COM SEUS RESPECTIVOS DIAS E NOMES
+// for (i = 0; i < 1; i++) {
+// 	console.log(mesesCompleto[i].mes);
+
+// 	for (j = 0; j < mesesCompleto[i].dias.length; j++) {
+// 		// if () {
+
+// 		// }
+// 		let informacao = `${mesesCompleto[i].diasNome[j]}  \n  ${mesesCompleto[i].dias[j]}`;
+// 		// console.log(mesesCompleto[i].dias[j]);
+// 		// console.log(mesesCompleto[i].diasNome[j]);
+// 		console.table(informacao);
+// 	}
+// }
+
+console.log(mesesCompleto); // MOSTRA TODOS OS OBJETOS MESES COM SEUS RESPECTIVOS DIAS E NOMES
 // console.table(mesesCompleto);
